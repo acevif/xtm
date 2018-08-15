@@ -23,26 +23,28 @@ public final class XCTemplateManager {
             let argument = arguments[1]
             
             switch argument {
-            case "install", "-i":
+            case "--install", "-i":
                 print("Installing")
-            case "list", "-l":
+            case "--list", "-l":
                 list()
-            case "remove", "-r":
+            case "--remove", "-r":
                 remove()
-            case "enable", "-e":
+            case "--enable", "-e":
                 enable()
-            case "disable", "-d":
+            case "--disable", "-d":
                 disable()
-            case "update", "-u":
+            case "--update", "-u":
                 print("Updating")
-            case "version", "-v":
+            case "--version", "-v":
                 version()
+            case "--help", "-h":
+                help()
             default:
-                print("No arguments provided. Valid arguments include:\nlist, -l, install, -i, remove, -r, enable, -e, disable, -d update, -u, version, -v")
+                help()
             }
             
         } else {
-            print("No arguments provided. Valid arguments include:\nlist, -l, install, -i, remove, -r, enable, -e, disable, -d update, -u, version, -v")
+            help()
         }
     }
     
@@ -182,6 +184,40 @@ public final class XCTemplateManager {
             sema.signal()
         }.resume()
         sema.wait();
+    }
+    
+    private func help() {
+        print("Usage:\n")
+        print("  xtm -i <template>")
+        print("  xtm --install <template>")
+        print("    Install a new template.\n")
+        print("  xtm -l")
+        print("  xtm --list")
+        print("    Lists all templates; " + "green".green + " means enabled, " + "red".red + " means disabled.\n")
+        print("  xtm -r <template>")
+        print("  xtm --remove <template>")
+        print("    Removes template.\n")
+        print("  xtm -e <template>")
+        print("  xtm --enable <template>")
+        print("    Enables template.\n")
+        print("  xtm -d <template>")
+        print("  xtm --disable <template>")
+        print("    Disables template.\n")
+        print("  xtm -u")
+        print("  xtm --update")
+        print("    Updates Xcode Template Manager to latest version.\n")
+        print("  xtm -u <template>")
+        print("  xtm --update <template>")
+        print("    Updates template to latest version.\n")
+        print("  xtm -v")
+        print("  xtm --version")
+        print("    Version info of Xcode Template Manager.\n")
+        print("  xtm -v <template>")
+        print("  xtm --version <template>")
+        print("    Version info of template.\n")
+        print("  xtm -h")
+        print("  xtm --help")
+        print("    How to use Xcode Template Manager.")
     }
     
 }
