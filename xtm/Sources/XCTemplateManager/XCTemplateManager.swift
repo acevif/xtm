@@ -1,6 +1,5 @@
 //
 //  XCTemplateManager.swift
-//  XCTemplateManagerCore
 //
 //  Created by Cameron Ingham on 8/14/18.
 //
