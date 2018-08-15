@@ -48,7 +48,7 @@ public final class XCTemplateManager {
     
     private func list() {
         do {
-            let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Xcode Manager/")
+            let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
             if templatesFolder.subfolders.count > 0 {
                 for template in templatesFolder.subfolders {
                     if template.name.contains(".xctemplatedisabled") {
@@ -62,7 +62,7 @@ public final class XCTemplateManager {
             }
         } catch {
             do {
-                try FileSystem().createFolder(at: "~/Library/Developer/Xcode/Templates/Project Templates/Xcode Manager/")
+                try FileSystem().createFolder(at: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
                 print("No Templates")
             } catch {
                 print("\(error.localizedDescription)".red.bold)
@@ -74,7 +74,7 @@ public final class XCTemplateManager {
         if arguments.count == 3 {
             let templateToDelete = arguments[2]
             do {
-                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Xcode Manager/")
+                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
                 for template in templatesFolder.subfolders {
                     if template.name.replacingOccurrences(of: ".xctemplate", with: "") == templateToDelete {
                         do {
@@ -100,7 +100,7 @@ public final class XCTemplateManager {
         if arguments.count == 3 {
             let templateToEnable = arguments[2]
             do {
-                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Xcode Manager/")
+                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
                 for template in templatesFolder.subfolders {
                     if template.name.replacingOccurrences(of: ".xctemplatedisabled", with: "") == templateToEnable {
                         do {
@@ -126,7 +126,7 @@ public final class XCTemplateManager {
         if arguments.count == 3 {
             let templateToDisable = arguments[2].replacingOccurrences(of: ".xctemplate", with: ".xctemplatedisabled")
             do {
-                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Xcode Manager/")
+                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
                 for template in templatesFolder.subfolders {
                     if template.name.replacingOccurrences(of: ".xctemplate", with: "") == templateToDisable {
                         do {
