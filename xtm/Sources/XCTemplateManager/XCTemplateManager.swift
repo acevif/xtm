@@ -18,6 +18,8 @@ public final class XCTemplateManager {
     
     public func run() throws {
         
+        moveTemplates()
+        
         if arguments.count > 1 {
 
             let argument = arguments[1]
@@ -48,13 +50,28 @@ public final class XCTemplateManager {
         }
     }
     
+    private func moveTemplates() {
+        do {
+            try FileSystem().createFolder(at: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
+            let rootTemplatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/")
+            for template in rootTemplatesFolder.subfolders {
+                if template.name != "Template Manager" {
+                    let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
+                    try template.move(to: templatesFolder)
+                }
+            }
+        } catch {
+            print("\(error.localizedDescription)".red.bold)
+        }
+    }
+    
     private func list() {
         do {
             let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
             if templatesFolder.subfolders.count > 0 {
                 for template in templatesFolder.subfolders {
                     if template.name.contains(".xctemplatedisabled") {
-                        print("\(template.name.replacingOccurrences(of: ".xctemplatedisabled", with: ""))".red)
+                        print("\(template.name.replacingOccurrences(of: ".xctemplatedisabled", with: ""))".lightRed + " (Disabled)")
                     } else {
                         print("\(template.name.replacingOccurrences(of: ".xctemplate", with: ""))".green)
                     }
@@ -193,7 +210,7 @@ public final class XCTemplateManager {
         print("    Install a new template.\n")
         print("  xtm -l")
         print("  xtm --list")
-        print("    Lists all templates; " + "green".green + " means enabled, " + "red".red + " means disabled.\n")
+        print("    Lists all templates.\n")
         print("  xtm -r <template>")
         print("  xtm --remove <template>")
         print("    Removes template.\n")
