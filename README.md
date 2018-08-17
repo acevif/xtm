@@ -1,7 +1,7 @@
 <br/><br/>
 <p align="center">
   <img width="400" src="https://user-images.githubusercontent.com/2769158/44244892-6fa2ba00-a193-11e8-99e7-2da2e3d4978f.png"><br/><br/><br/>
-  <a href="https://github.com/Camji55/Xcode-Template-Manager"><img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?longCache=true&style=for-the-badge"></a>
+  <a href="https://github.com/Camji55/Xcode-Template-Manager"><img src="https://img.shields.io/badge/Version-0.0.1-blue.svg?longCache=true&style=for-the-badge"></a>
   <a href="https://github.com/Camji55/Xcode-Template-Manager/blob/master/LICENCE.md"><img src="https://img.shields.io/badge/Licence-MIT-green.svg?longCache=true&style=for-the-badge"></a>
 </p><br/>
 
