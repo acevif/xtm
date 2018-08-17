@@ -33,14 +33,14 @@ git clone https://github.com/Camji55/Xcode-Template-Manager.git
 If you have any issues with the install create an issue [here](https://github.com/Camji55/DevMountain-Xcode-Template/issues/new).
 
 ## How to Uninstall
-#### Uninstall with the Unnstaller
+#### Uninstall with the Uninstaller
 Run the following command in your Terminal application:
 
 ```sh
 curl -o uninstall.sh https://raw.githubusercontent.com/Camji55/Xcode-Template-Manager/master/Install%20Scripts/uninstall.sh && sudo bash uninstall.sh && rm -R -f uninstall.sh
 ```
 
-#### Install Manually
+#### Uninstall Manually
 1. Delete xtm from...
 
 ``` 
