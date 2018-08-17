@@ -203,39 +203,69 @@ public final class XCTemplateManager {
     }
     
     private func version() {
-        let sema = DispatchSemaphore( value: 0)
+        if arguments.count == 3 {
+            let templateName = arguments[2]
+            do {
+                let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
+                if templatesFolder.containsSubfolder(named: "\(templateName).xctemplate"){
+                    let templateFolder = try templatesFolder.subfolder(named: "\(templateName).xctemplate")
+                    if templateFolder.containsFile(named: "version.txt") {
+                        let versionFile = try templateFolder.file(named: "version.txt")
+                        let version = try versionFile.readAsString()
+                        print("Version: " + "\(version)".green)
+                    } else {
+                        print("This template does not contain any version info.".red.bold)
+                    }
+                } else if templatesFolder.containsSubfolder(named: "\(templateName).xctemplatedisabled"){
+                    let templateFolder = try templatesFolder.subfolder(named: "\(templateName).xctemplatedisabled")
+                    if templateFolder.containsFile(named: "version.txt") {
+                        let versionFile = try templateFolder.file(named: "version.txt")
+                        let version = try versionFile.readAsString()
+                        print("Version: " + "\(version)".green)
+                    } else {
+                        print("This template does not contain any version info.".red.bold)
+                    }
+                } else {
+                    print("That template does not exist.".red.bold)
+                }
+            } catch {
+                print("\(error.localizedDescription)".red.bold)
+            }
+        } else {
+            let sema = DispatchSemaphore( value: 0)
 
-        guard let url = URL(string: "https://raw.githubusercontent.com/Camji55/Xcode-Template-Manager/master/version.txt") else {
-            print("Current: \(currentVersion)")
-            return
+            guard let url = URL(string: "https://raw.githubusercontent.com/Camji55/Xcode-Template-Manager/master/version.txt") else {
+                print("Current: \(currentVersion)")
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if error != nil {
+                    print("Current: \(currentVersion)")
+                    sema.signal()
+                    return
+                }
+                
+                guard let data = data, let latestVersion = String(data: data, encoding: .utf8) else {
+                    print("Current: \(currentVersion)")
+                    sema.signal()
+                    return
+                }
+                
+                if !latestVersion.contains(currentVersion) {
+                    print("Current: " + "\(currentVersion)".red + "\nLatest: " + "\(latestVersion)".green)
+                    print("To update, run: " + "xtm -u".bold)
+                } else {
+                    print("Current: " + "\(currentVersion)".green + "\nLatest: " + "\(latestVersion)".green)
+                }
+                
+                sema.signal()
+            }.resume()
+            sema.wait();
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if error != nil {
-                print("Current: \(currentVersion)")
-                sema.signal()
-                return
-            }
-            
-            guard let data = data, let latestVersion = String(data: data, encoding: .utf8) else {
-                print("Current: \(currentVersion)")
-                sema.signal()
-                return
-            }
-            
-            if !latestVersion.contains(currentVersion) {
-                print("Current: " + "\(currentVersion)".red + "\nLatest: " + "\(latestVersion)".green)
-                print("To update, run: " + "xtm -u".bold)
-            } else {
-                print("Current: " + "\(currentVersion)".green + "\nLatest: " + "\(latestVersion)".green)
-            }
-            
-            sema.signal()
-        }.resume()
-        sema.wait();
     }
     
     private func help() {
