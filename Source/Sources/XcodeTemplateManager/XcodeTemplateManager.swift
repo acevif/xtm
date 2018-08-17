@@ -221,7 +221,8 @@ public final class XcodeTemplateManager {
             let _ = shell(launchPath: "/usr/bin/git", arguments: ["clone", "https://github.com/Camji55/Xcode-Template-Manager.git", "\( try folderPath.createSubfolderIfNeeded(withName: "Xcode-Template-Manager").path)"])
             let xtm = try folderPath.subfolder(atPath: "Xcode-Template-Manager/Source").file(named: "xtm")
             //print(xtm.path)
-            try xtm.move(to: Folder(path: "/usr/local/bin"))
+            //try xtm.move(to: Folder(path: "/usr/local/bin"))
+            let _ = shell(launchPath: "/usr/bin/sudo", arguments: ["mv", xtm.path, "/usr/local/bin/xtm"])
         } catch {
             print("\(error.localizedDescription)".red.bold)
         }
