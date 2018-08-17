@@ -5,7 +5,7 @@
   <a href="https://github.com/Camji55/Xcode-Template-Manager/blob/master/LICENCE.md"><img src="https://img.shields.io/badge/Licence-MIT-green.svg?longCache=true&style=for-the-badge"></a>
 </p><br/>
 
-# Xcode Template Manager
+# Xcode Template Manager (xtm)
 
 Xcode Template Manager is a Swift command line tool that helps your manage your Xcode project templates.
 
@@ -52,6 +52,12 @@ If you have any issues with the uninstall create an issue [here](https://github.
 ## How to Use
 
 To view all commands type ```xtm -h``` or ```xtm --help``` in the terminal after it has been installed.
+
+## Want your template on xtm?
+
+All you need to do is make sure that the template.xctemplate is in the root folder of it's repository, and add a version.txt inside of the xctemplate folder.
+
+[Here](https://github.com/Camji55/DevMountain-Xcode-Template) is an example template that meets these requirements.
 
 ## Contributions
 
