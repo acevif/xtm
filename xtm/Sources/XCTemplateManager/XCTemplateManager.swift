@@ -35,6 +35,8 @@ public final class XCTemplateManager {
                 enable()
             case "--disable", "-d":
                 disable()
+            case "--open", "-o":
+                open()
             case "--update", "-u":
                 print("Updating")
             case "--version", "-v":
@@ -202,6 +204,16 @@ public final class XCTemplateManager {
         }
     }
     
+    private func open() {
+        do {
+            let templatesFolderPath = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/").path
+            let _ = shell(launchPath: "/usr/bin/open", arguments: [templatesFolderPath])
+            
+        } catch {
+            print("\(error.localizedDescription)".red.bold)
+        }
+    }
+    
     private func version() {
         if arguments.count == 3 {
             let templateName = arguments[2]
@@ -285,6 +297,9 @@ public final class XCTemplateManager {
         print("  xtm -d <template>")
         print("  xtm --disable <template>")
         print("    Disables template.\n")
+        print("  xtm -o")
+        print("  xtm --open")
+        print("    Opens the Template Manager folder in Finder.\n")
         print("  xtm -u")
         print("  xtm --update")
         print("    Updates Xcode Template Manager to latest version.\n")
