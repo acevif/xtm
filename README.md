@@ -55,7 +55,7 @@ To view all commands type ```xtm -h``` or ```xtm --help``` in the terminal after
 
 ## Want your template on xtm?
 
-All you need to do is make sure that the template.xctemplate is in the root folder of it's repository, and add a version.txt inside of the xctemplate folder.
+All you need to do is make sure that the template.xctemplate is in the root folder of it's repository, and add a version.txt inside of the xctemplate folder with a 3 point version number. (Ex. 1.0.0)
 
 [Here](https://github.com/Camji55/DevMountain-Xcode-Template) is an example template that meets these requirements.
 
