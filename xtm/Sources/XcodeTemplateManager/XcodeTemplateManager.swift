@@ -1,5 +1,5 @@
 //
-//  XCTemplateManager.swift
+//  XcodeTemplateManager.swift
 //
 //  Created by Cameron Ingham on 8/14/18.
 //
@@ -8,7 +8,7 @@ import Foundation
 import Files
 import Rainbow
 
-public final class XCTemplateManager {
+public final class XcodeTemplateManager {
     
     private let arguments: [String]
     

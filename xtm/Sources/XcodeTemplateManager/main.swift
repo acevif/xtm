@@ -1,5 +1,5 @@
 let currentVersion = "0.0.1"
-let tool = XCTemplateManager()
+let tool = XcodeTemplateManager()
 
 do {
     try tool.run()
