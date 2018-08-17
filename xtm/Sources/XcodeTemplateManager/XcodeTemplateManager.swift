@@ -267,7 +267,6 @@ public final class XcodeTemplateManager {
                 
                 if !latestVersion.contains(currentVersion) {
                     print("Current: " + "\(currentVersion)".red + "\nLatest: " + "\(latestVersion)".green)
-                    print("To update, run: " + "xtm -u".bold)
                 } else {
                     print("Current: " + "\(currentVersion)".green + "\nLatest: " + "\(latestVersion)".green)
                 }
