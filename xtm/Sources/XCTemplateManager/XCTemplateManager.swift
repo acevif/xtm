@@ -26,7 +26,7 @@ public final class XCTemplateManager {
             
             switch argument {
             case "--install", "-i":
-                print("Installing")
+                install()
             case "--list", "-l":
                 list()
             case "--remove", "-r":
@@ -47,6 +47,36 @@ public final class XCTemplateManager {
             
         } else {
             help()
+        }
+    }
+    
+    private func install() {
+        if arguments.count == 3 {
+            do {
+                let url = arguments[2]
+                let random = randomString(length: 15)
+                try FileSystem().createFolderIfNeeded(at: "~/.xtm/temporary/")
+                let folderPath = try Folder(path: "~/.xtm/temporary/")
+                let _ = shell(launchPath: "/usr/bin/git", arguments: ["clone", "\(url)", "\( try folderPath.createSubfolderIfNeeded(withName: random).path)"])
+                let newTemplateFolder = try folderPath.subfolder(named: random)
+                for template in newTemplateFolder.subfolders {
+                    if template.name.hasSuffix(".xctemplate"){
+                        let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
+                        do {
+                            try template.move(to: templatesFolder)
+                            print("\(template.name.replacingOccurrences(of: ".xctemplate", with: "")) has been installed successfully!".green)
+                        } catch {
+                            print("Template with name of \(template.name.replacingOccurrences(of: ".xctemplate", with: "")) already exists.".red.bold)
+                        }
+                    }
+                }
+                try Folder(path: "~/.xtm").delete()
+            } catch {
+                print("\(error.localizedDescription)".red.bold)
+            }
+        } else {
+            print("Invalid argument usage.\n".red.bold)
+            print("To use, run: " + "xtm -i template_url")
         }
     }
     
@@ -94,17 +124,22 @@ public final class XCTemplateManager {
             let templateToDelete = arguments[2]
             do {
                 let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
-                for template in templatesFolder.subfolders {
-                    if template.name.replacingOccurrences(of: ".xctemplate", with: "") == templateToDelete {
-                        do {
-                            try template.delete()
-                            print("\(template.name.replacingOccurrences(of: ".xctemplate", with: "")) Removed".green)
-                        } catch {
-                            print("\(error.localizedDescription)".red.bold)
-                        }
-                    } else {
-                        print("That template does not exist.".red.bold)
+                if templatesFolder.containsSubfolder(named: "\(templateToDelete).xctemplate"){
+                    do {
+                        try Folder(path: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/\(templateToDelete).xctemplate").delete()
+                        print("\(templateToDelete) removed".green)
+                    } catch {
+                        print("\(error.localizedDescription)".red.bold)
                     }
+                } else if templatesFolder.containsSubfolder(named: "\(templateToDelete).xctemplatedisabled"){
+                    do {
+                        try Folder(path: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/\(templateToDelete).xctemplatedisabled").delete()
+                        print("\(templateToDelete) Removed".green)
+                    } catch {
+                        print("\(error.localizedDescription)".red.bold)
+                    }
+                } else {
+                    print("That template does not exist.".red.bold)
                 }
             } catch {
                 print("\(error.localizedDescription)".red.bold)
@@ -120,17 +155,17 @@ public final class XCTemplateManager {
             let templateToEnable = arguments[2]
             do {
                 let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
-                for template in templatesFolder.subfolders {
-                    if template.name.replacingOccurrences(of: ".xctemplatedisabled", with: "") == templateToEnable {
-                        do {
-                            try template.rename(to: template.name.replacingOccurrences(of: ".xctemplatedisabled", with: ".xctemplate"), keepExtension: false)
-                            print("\(templateToEnable) Enabled".green)
-                        } catch {
-                            print("\(error.localizedDescription)".red.bold)
-                        }
-                    } else {
-                        print("That template does not exist.".red.bold)
+                if templatesFolder.containsSubfolder(named: "\(templateToEnable).xctemplate"){
+                    print("\(templateToEnable) already enabled".green)
+                } else if templatesFolder.containsSubfolder(named: "\(templateToEnable).xctemplatedisabled"){
+                    do {
+                        try Folder(path: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/\(templateToEnable).xctemplatedisabled").rename(to: "\(templateToEnable).xctemplate", keepExtension: false)
+                        print("\(templateToEnable) enabled".green)
+                    } catch {
+                        print("\(error.localizedDescription)".red.bold)
                     }
+                } else {
+                    print("That template does not exist.".red.bold)
                 }
             } catch {
                 print("\(error.localizedDescription)".red.bold)
@@ -143,20 +178,20 @@ public final class XCTemplateManager {
     
     private func disable() {
         if arguments.count == 3 {
-            let templateToDisable = arguments[2].replacingOccurrences(of: ".xctemplate", with: ".xctemplatedisabled")
+            let templateToDisable = arguments[2]
             do {
                 let templatesFolder = try Folder.home.subfolder(atPath: "Library/Developer/Xcode/Templates/Project Templates/Template Manager/")
-                for template in templatesFolder.subfolders {
-                    if template.name.replacingOccurrences(of: ".xctemplate", with: "") == templateToDisable {
-                        do {
-                            try template.rename(to: template.name.replacingOccurrences(of: ".xctemplate", with: ".xctemplatedisabled"), keepExtension: false)
-                            print("\(templateToDisable.replacingOccurrences(of: ".xctemplate", with: ".xctemplatedisabled")) Disabled".green)
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    } else {
-                        print("That template does not exist.".red.bold)
+                if templatesFolder.containsSubfolder(named: "\(templateToDisable).xctemplatedisabled"){
+                    print("\(templateToDisable) already disabled".green)
+                } else if templatesFolder.containsSubfolder(named: "\(templateToDisable).xctemplate"){
+                    do {
+                        try Folder(path: "~/Library/Developer/Xcode/Templates/Project Templates/Template Manager/\(templateToDisable).xctemplate").rename(to: "\(templateToDisable).xctemplatedisabled", keepExtension: false)
+                        print("\(templateToDisable) disabled".green)
+                    } catch {
+                        print("\(error.localizedDescription)".red.bold)
                     }
+                } else {
+                    print("That template does not exist.".red.bold)
                 }
             } catch {
                 print("\(error.localizedDescription)".red.bold)
@@ -235,6 +270,37 @@ public final class XCTemplateManager {
         print("  xtm -h")
         print("  xtm --help")
         print("    How to use Xcode Template Manager.")
+    }
+    
+    private func shell(launchPath: String, arguments: [String]) -> String? {
+        let task = Process()
+        task.launchPath = launchPath
+        task.arguments = arguments
+        
+        let pipe = Pipe()
+        task.standardOutput = pipe
+        task.launch()
+        
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: String.Encoding.utf8)
+        
+        return output
+    }
+    
+    private func randomString(length: Int) -> String {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< length {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        return randomString
     }
     
 }
