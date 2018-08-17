@@ -37,6 +37,8 @@ public final class XcodeTemplateManager {
                 disable()
             case "--open", "-o":
                 open()
+            case "--update", "-u":
+                update()
             case "--version", "-v":
                 version()
             case "--help", "-h":
@@ -212,6 +214,20 @@ public final class XcodeTemplateManager {
         }
     }
     
+    private func update() {
+        do {
+            try FileSystem().createFolderIfNeeded(at: "~/.xtm/")
+            let folderPath = try Folder.home.subfolder(atPath: ".xtm/")
+            let _ = shell(launchPath: "/usr/bin/git", arguments: ["clone", "https://github.com/Camji55/Xcode-Template-Manager.git", "\( try folderPath.createSubfolderIfNeeded(withName: "Xcode-Template-Manager").path)"])
+            let xtm = try folderPath.subfolder(atPath: "Xcode-Template-Manager/Source").file(named: "xtm")
+            print(xtm.path)
+           let _ = shell(launchPath: "/bin/mv", arguments: [xtm.path, "/usr/local/bin/xtm"])
+        } catch {
+            print("\(error.localizedDescription)".red.bold)
+        }
+        
+    }
+    
     private func version() {
         if arguments.count == 3 {
             let templateName = arguments[2]
@@ -297,9 +313,9 @@ public final class XcodeTemplateManager {
         print("  xtm -o")
         print("  xtm --open")
         print("    Opens the Template Manager folder in Finder.\n")
-        print("  xtm -u <template>")
-        print("  xtm --update <template>")
-        print("    Updates template to latest version.\n")
+        print("  xtm -u")
+        print("  xtm --update")
+        print("    Updates Xcode Template Manager to latest version.\n")
         print("  xtm -v")
         print("  xtm --version")
         print("    Version info of Xcode Template Manager.\n")
