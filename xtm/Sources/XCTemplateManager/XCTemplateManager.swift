@@ -37,8 +37,6 @@ public final class XCTemplateManager {
                 disable()
             case "--open", "-o":
                 open()
-            case "--update", "-u":
-                print("Updating")
             case "--version", "-v":
                 version()
             case "--help", "-h":
@@ -57,8 +55,8 @@ public final class XCTemplateManager {
             do {
                 let url = arguments[2]
                 let random = randomString(length: 15)
-                try FileSystem().createFolderIfNeeded(at: "~/.xtm/temporary/")
-                let folderPath = try Folder(path: "~/.xtm/temporary/")
+                try FileSystem().createFolderIfNeeded(at: "~/.xtm/")
+                let folderPath = try Folder.home.subfolder(atPath: ".xtm/")
                 let _ = shell(launchPath: "/usr/bin/git", arguments: ["clone", "\(url)", "\( try folderPath.createSubfolderIfNeeded(withName: random).path)"])
                 let newTemplateFolder = try folderPath.subfolder(named: random)
                 for template in newTemplateFolder.subfolders {
@@ -300,9 +298,6 @@ public final class XCTemplateManager {
         print("  xtm -o")
         print("  xtm --open")
         print("    Opens the Template Manager folder in Finder.\n")
-        print("  xtm -u")
-        print("  xtm --update")
-        print("    Updates Xcode Template Manager to latest version.\n")
         print("  xtm -u <template>")
         print("  xtm --update <template>")
         print("    Updates template to latest version.\n")
