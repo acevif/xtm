@@ -5,7 +5,7 @@
   <a href="https://github.com/Camji55/Xcode-Template-Manager/blob/master/LICENCE.md"><img src="https://img.shields.io/badge/Licence-MIT-green.svg?longCache=true&style=for-the-badge"></a>
 </p><br/>
 
-# Xcode Template Manager (xtm)
+# Xcode Template Manager
 
 Xcode Template Manager is a Swift command line tool that helps your manage your Xcode project templates.
 
