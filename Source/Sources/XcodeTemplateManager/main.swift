@@ -1,4 +1,4 @@
-let currentVersion = "0.0.1"
+let currentVersion = "1.0.0"
 let tool = XcodeTemplateManager()
 
 do {
