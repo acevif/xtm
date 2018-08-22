@@ -1,8 +1,10 @@
 <br/><br/>
 <p align="center">
   <img width="400" src="https://user-images.githubusercontent.com/2769158/44244892-6fa2ba00-a193-11e8-99e7-2da2e3d4978f.png"><br/><br/><br/>
-  <a href="https://github.com/Camji55/Xcode-Template-Manager"><img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?longCache=true&style=for-the-badge"></a>
+ <img src="https://img.shields.io/badge/Version-1.0.0-blue.svg?longCache=true&style=for-the-badge">
   <a href="https://github.com/Camji55/Xcode-Template-Manager/blob/master/LICENCE.md"><img src="https://img.shields.io/badge/Licence-MIT-green.svg?longCache=true&style=for-the-badge"></a>
+    <img height="28" src="https://forthebadge.com/images/badges/made-with-swift.svg">
+  <a href="https://github.com/vsouza/awesome-ios#other-xcode"><img height="28" src="https://user-images.githubusercontent.com/2769158/44446193-327a6580-a5a1-11e8-91e2-21ca857f95d4.png"></a>
 </p><br/>
 
 # Xcode Template Manager
